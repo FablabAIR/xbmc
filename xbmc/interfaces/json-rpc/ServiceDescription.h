@@ -1712,7 +1712,14 @@ namespace JSONRPC
         "}"
       "},"
       "\"additionalProperties\": false"
-    "}"
+    "}",
+	"\"ListItem.Details\": {"
+      "\"extends\": \"Item.Details.Base\","
+      "\"properties\": {"
+        "\"itemid\": { \"type\": \"integer\", \"required\": true },"
+        "\"name\": { \"type\": \"string\", \"required\": true },"
+          "}"
+        "}"
   };
 
   const char* const JSONRPC_SERVICE_METHODS[] = {  
@@ -4005,6 +4012,21 @@ namespace JSONRPC
         "{ \"name\": \"setting\", \"type\": \"string\", \"required\": true, \"minLength\": 1 }"
       "],"
       "\"returns\": \"string\""
+    "}",
+	  "\"GUI.GetCurrentListDisplayed\": {"
+      "\"type\": \"method\","
+      "\"description\": \"Get the current navigation list displayed on the screen\","
+      "\"transport\": \"Response\","
+      "\"permission\": \"ReadData\","
+      "\"params\": ["
+      "],"
+      "\"returns\": { \"type\": \"object\","
+        "\"properties\": {"
+          "\"itemList\": { \"type\": \"array\","
+            "\"items\": { \"$ref\": \"ListItem.Details\" }"
+          "}"
+        "}"
+      "}"
     "}"
   };
 

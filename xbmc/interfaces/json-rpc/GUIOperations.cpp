@@ -126,6 +126,24 @@ JSONRPC_STATUS CGUIOperations::GetStereoscopicModes(const CStdString &method, IT
   return OK;
 }
 
+JSONRPC_STATUS CGUIOperations::GetCurrentListDisplayed(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result){
+	
+	CStdString propertyName = "currentwindow"; 
+	
+	GetPropertyValue(propertyName, result);
+
+	//CVariant test = result;
+	
+	//const char *vinit[] = {"title", result.as()};
+
+	CVariant notif = CVariant("titre");
+
+	notif.push_back(result);
+
+	ShowNotification(method, transport, client, notif, result);
+	return OK;
+}
+
 JSONRPC_STATUS CGUIOperations::GetPropertyValue(const CStdString &property, CVariant &result)
 {
   if (property.Equals("currentwindow"))
