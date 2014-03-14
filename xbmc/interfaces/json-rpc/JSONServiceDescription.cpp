@@ -1545,8 +1545,8 @@ bool CJSONServiceDescription::AddMethod(const std::string &jsonMethod, MethodCal
 {
   if (method == NULL)
   {
-    CLog::Log(LOGERROR, "JSONRPC: Invalid JSONRPC method implementation");
     return false;
+    CLog::Log(LOGERROR, "JSONRPC: Invalid JSONRPC method implementation");
   }
 
   return addMethod(jsonMethod, method);

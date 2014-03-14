@@ -31,6 +31,7 @@
 #include "utils/Variant.h"
 #include "guilib/StereoscopicsManager.h"
 #include "windowing/WindowingFactory.h"
+#include "guilib/GUIWindowManager.h"
 
 using namespace std;
 using namespace JSONRPC;
@@ -128,19 +129,36 @@ JSONRPC_STATUS CGUIOperations::GetStereoscopicModes(const CStdString &method, IT
 
 JSONRPC_STATUS CGUIOperations::GetCurrentListDisplayed(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result){
 	
-	CStdString propertyName = "currentwindow"; 
+	//CStdString propertyName = "currentwindow";
 	
-	GetPropertyValue(propertyName, result);
+	//CVariant windowInfo;
+
+	//GetPropertyValue(propertyName, windowInfo);
+
+	//windowInfo["id"]
+
+
+	CVariant temp = CVariant();
+
+	CGUIWindow * window = g_windowManager.GetWindow(g_windowManager.GetFocusedWindow());
+
+	if(window->HasListItems()){
+		//if(dynamic_cast<CGUIAddonWindow>(window)) {
+			//for(int i=0; i<((CGUIAddonWindow)window).)
+			CLog::Log(LOGERROR, "SALUT SALUT, dynamic cast !");
+			//CFileItemPtr *list = window->GetCurrentListItem(0);
+			//list->
+		//}
+	}
+	else {
+		//temp = CVariant(std::vector<string,string>());
+	}
+
 
 	//CVariant test = result;
 	
 	//const char *vinit[] = {"title", result.as()};
 
-	CVariant notif = CVariant("titre");
-
-	notif.push_back(result);
-
-	ShowNotification(method, transport, client, notif, result);
 	return OK;
 }
 

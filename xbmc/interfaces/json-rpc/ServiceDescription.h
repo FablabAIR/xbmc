@@ -1711,15 +1711,18 @@ namespace JSONRPC
           "\"uniqueItems\": true"
         "}"
       "},"
-      "\"additionalProperties\": false"
+    	"\"additionalProperties\": false"
     "}",
-	"\"ListItem.Details\": {"
+      "\"ListItem.Details\": {"
       "\"extends\": \"Item.Details.Base\","
       "\"properties\": {"
         "\"itemid\": { \"type\": \"integer\", \"required\": true },"
-        "\"name\": { \"type\": \"string\", \"required\": true },"
+        "\"name\": { \"type\": \"string\", \"required\": true }"
           "}"
-        "}"
+        "},"
+      	  "\"additionalProperties\": false"
+   "}"
+
   };
 
   const char* const JSONRPC_SERVICE_METHODS[] = {  
@@ -4018,8 +4021,7 @@ namespace JSONRPC
       "\"description\": \"Get the current navigation list displayed on the screen\","
       "\"transport\": \"Response\","
       "\"permission\": \"ReadData\","
-      "\"params\": ["
-      "],"
+      "\"params\": [],"
       "\"returns\": { \"type\": \"object\","
         "\"properties\": {"
           "\"itemList\": { \"type\": \"array\","

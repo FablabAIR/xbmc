@@ -1573,6 +1573,22 @@
       }
     }
   },
+  "GUI.GetCurrentListDisplayed": {"
+      "type": "method",
+      "description": "Get the current navigation list displayed on the screen",
+      "transport": "Response",
+      "permission": "ReadData",
+      "params": [],
+      "returns": { 
+      	"type": "object",
+        "properties": {
+          "itemList": { 
+          	"type": "array",
+            "items": { "$ref": "ListItem.Details" }
+          }
+        }
+      }
+    },
   "Addons.GetAddons": {
     "type": "method",
     "description": "Gets all available addons",
