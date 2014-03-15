@@ -144,9 +144,7 @@ JSONRPC_STATUS CGUIOperations::GetCurrentListDisplayed(const CStdString &method,
 
 	if(window->HasListItems()){
 		//if(dynamic_cast<CGUIAddonWindow>(window)) {
-
 			//CLog::Log(LOGERROR, "SALUT SALUT, dynamic cast !");
-
 			//CFileItemPtr *list = window->GetCurrentListItem(0);
 			//list->
 		//}
