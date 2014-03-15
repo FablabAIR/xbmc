@@ -1684,6 +1684,13 @@
         "uniqueItems": true
       }
     },
+    "ListItem.Details": {
+      "extends": "Item.Details.Base",
+      "properties": {
+        "itemid": { "type": "integer", "required": true },
+        "name": { "type": "string", "required": true }
+       }
+    },
     "additionalProperties": false
   }
 }
