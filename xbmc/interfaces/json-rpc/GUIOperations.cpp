@@ -128,35 +128,31 @@ JSONRPC_STATUS CGUIOperations::GetStereoscopicModes(const CStdString &method, IT
 }
 
 JSONRPC_STATUS CGUIOperations::GetCurrentListDisplayed(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result){
-	
-	//CStdString propertyName = "currentwindow";
-	
-	//CVariant windowInfo;
-
-	//GetPropertyValue(propertyName, windowInfo);
-
-	//windowInfo["id"]
-
-
-	CVariant temp = CVariant();
 
 	CGUIWindow * window = g_windowManager.GetWindow(g_windowManager.GetFocusedWindow());
 
 	if(window->HasListItems()){
-		//if(dynamic_cast<CGUIAddonWindow>(window)) {
-			//CLog::Log(LOGERROR, "SALUT SALUT, dynamic cast !");
-			//CFileItemPtr *list = window->GetCurrentListItem(0);
-			//list->
-		//}
+		CFileItemPtr listItem = window->GetCurrentListItem(0);
+
+		CVariant tmpItem;
+		tmpItem["itemId"].push_back(listItem->GetLabel());
+		result.push_back(tmpItem);
+
+
+		CFileItemPtr listItemTmp = window->GetCurrentListItem(1);
+		int id = 1;
+		while(!listItemTmp->GetLabel().Equals(listItem->GetLabel())) {
+			tmpItem.clear();
+			tmpItem["itemId"].push_back(CVariant(listItemTmp->GetLabel()));
+			result.push_back(tmpItem);
+
+			id++;
+			listItemTmp = window->GetCurrentListItem(id);
+		}
 	}
 	else {
-		//temp = CVariant(std::vector<string,string>());
+		result.push_back(CVariant());
 	}
-
-
-	//CVariant test = result;
-	
-	//const char *vinit[] = {"title", result.as()};
 
 	return OK;
 }
