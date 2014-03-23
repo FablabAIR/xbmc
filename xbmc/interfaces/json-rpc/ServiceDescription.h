@@ -4028,6 +4028,20 @@ namespace JSONRPC
           "}"
         "}"
       "}"
+    "}",
+	 "\"GUI.GetCurrentMainMenu\": {"
+      "\"type\": \"method\","
+      "\"description\": \"Get the current main menu\","
+      "\"transport\": \"Response\","
+      "\"permission\": \"ReadData\","
+      "\"params\": [],"
+      "\"returns\": { \"type\": \"object\","
+        "\"properties\": {"
+          "\"itemList\": { \"type\": \"array\","
+            "\"items\": { \"$ref\": \"ListItem.Details\" }"
+          "}"
+        "}"
+      "}"
     "}"
   };
 
