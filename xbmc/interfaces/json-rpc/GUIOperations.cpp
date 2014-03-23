@@ -35,6 +35,8 @@
 #include "guilib/StereoscopicsManager.h"
 #include "windowing/WindowingFactory.h"
 #include "guilib/GUIWindowManager.h"
+#include "InputOperations.h"
+
 
 using namespace std;
 using namespace JSONRPC;
@@ -247,6 +249,60 @@ JSONRPC_STATUS CGUIOperations::GetCurrentMainMenu(const CStdString &method, ITra
 	//result.push_back("control description"+control.GetDescription);
 	//control.
 
+	return OK;
+}
+
+JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result){
+
+	CGUIWindow *window = g_windowManager.GetWindow(g_windowManager.GetFocusedWindow());
+
+
+	if(window->HasListItems()){
+		const char *param = parameterObject["SelectedItem"].asString().c_str();
+
+
+		CFileItemPtr firstListItem, listItemTmp;
+		CFileItemPtr selectedItemToTrigger;
+		bool ItemFound = false;
+		int id =0;
+		int idToTrigger;
+
+		firstListItem = window->GetCurrentListItem(0);
+		if(firstListItem->GetLabel().Equals(param)) {
+			selectedItemToTrigger = firstListItem;
+			idToTrigger = id;
+			ItemFound = true;
+		}
+		else {
+			id++;
+			listItemTmp = window->GetCurrentListItem(id);
+			while( !(firstListItem->GetLabel().Equals(listItemTmp->GetLabel().c_str())) ) {
+				if(listItemTmp->GetLabel().Equals(param)) {
+					selectedItemToTrigger = listItemTmp;
+					idToTrigger = id;
+					ItemFound = true;
+					break;
+				}
+				id++;
+				listItemTmp = window->GetCurrentListItem(id);
+			}
+		}
+
+
+		if(ItemFound) {
+			for(int i=0;i<idToTrigger;i++) {
+				CInputOperations::Down(method, transport, client, parameterObject, result);
+			}
+			CInputOperations::Select(method, transport, client, parameterObject, result);
+			result["res"].push_back(CVariant("OK - selectedItem :"+selectedItemToTrigger->GetLabel()));
+		}
+		else {
+			return InvalidParams;
+		}
+	}
+	else {
+		return InvalidParams;
+	}
 	return OK;
 }
 

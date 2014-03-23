@@ -37,6 +37,7 @@ namespace JSONRPC
     static JSONRPC_STATUS GetStereoscopicModes(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
 	static JSONRPC_STATUS GetCurrentListDisplayed(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
 	static JSONRPC_STATUS GetCurrentMainMenu(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
+	static JSONRPC_STATUS NavigateInListItem(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result);
   private:
     static JSONRPC_STATUS GetPropertyValue(const CStdString &property, CVariant &result);
     static CVariant GetStereoModeObjectFromGuiMode(const RENDER_STEREO_MODE &mode);

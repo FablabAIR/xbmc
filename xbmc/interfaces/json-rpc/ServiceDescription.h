@@ -4042,6 +4042,15 @@ namespace JSONRPC
           "}"
         "}"
       "}"
+    "\"GUI.NavigateInListItem\": {"
+	  "\"type\": \"method\","
+	  "\"description\": \"Navigate in list item menu\","
+	  "\"transport\": \"Response\","
+	  "\"permission\": \"ReadData\","
+	  "\"params\": ["
+    	"{\"name\":\"SelectedItem\",\"type\": \"string\", \"required\": true}"
+    	"],"
+	  "\"returns\": \"string\""
     "}"
   };
 
