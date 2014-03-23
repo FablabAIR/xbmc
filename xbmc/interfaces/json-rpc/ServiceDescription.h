@@ -4042,6 +4042,7 @@ namespace JSONRPC
           "}"
         "}"
       "}"
+	  "}",
     "\"GUI.NavigateInListItem\": {"
 	  "\"type\": \"method\","
 	  "\"description\": \"Navigate in list item menu\","

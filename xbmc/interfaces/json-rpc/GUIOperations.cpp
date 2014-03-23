@@ -20,7 +20,6 @@
 
 #include "addons/Skin.h"
 #include "interfaces/legacy/ModuleXbmc.h"
-
 #include "GUIOperations.h"
 #include "Application.h"
 #include "ApplicationMessenger.h"
@@ -165,89 +164,78 @@ JSONRPC_STATUS CGUIOperations::GetCurrentListDisplayed(const CStdString &method,
 JSONRPC_STATUS CGUIOperations::GetCurrentMainMenu(const CStdString &method, ITransportLayer *transport, IClient *client, const CVariant &parameterObject, CVariant &result){
 	
 	CVariant menuContent;
-	//test["menuId"].push_back("MENU TEST");
-
-	//result.push_back(test);
-	
-	//CGUIWindow * window = g_windowManager.GetWindow(WINDOW_HOME);
-	/*CGUIWindow * window = g_windowManager.GetWindow( g_windowManager.GetFocusedWindow() );
-	
-
-	if(window->HasListItems()){
-		CFileItemPtr listItem = window->GetCurrentListItem(0);
-
-		//test["menuId"].push_back(listItem->GetLabel());
-	}
-	//result.push_back(window->GetControlType());
-	//result.push_back(window->GetControlIdBack());
-	//result.push_back(window->GetFocusedControlID());
-
-
-	const vector<ADDON::CSkinInfo::CStartupWindow> &startupWindows = g_SkinInfo->GetStartupWindows();
-	int i= 0;
-	for (vector<ADDON::CSkinInfo::CStartupWindow>::const_iterator it = startupWindows.begin(); it != startupWindows.end(); it++)
-  { 
-	string windowName = it->m_name;
-    if (StringUtils::IsNaturalNumber(windowName))
-      windowName = g_localizeStrings.Get(atoi(windowName.c_str()));
-
-	//result.push_back(windowName);
-	i++;
-
-	}
-	*/
 	std::vector<string> categoriesLabels;
+	std::vector<string> categoriesLabels2;
+	std::string cond;
+
 	categoriesLabels.clear();
+	categoriesLabels.push_back("Music");
 	categoriesLabels.push_back("Videos");
 	categoriesLabels.push_back("Movie");
 	categoriesLabels.push_back("TVShow");
-	categoriesLabels.push_back("Music");
 	categoriesLabels.push_back("Pictures");
 	categoriesLabels.push_back("Programs");
 	categoriesLabels.push_back("Weather");
-	 
-	 for(std::size_t i=0;i<categoriesLabels.size();++i) {
 
-		 std::string cond = "Skin.HasSetting(HomeMenuNo" + categoriesLabels[i] + "Button)";
-		 
+	// this is pretty uggly but the Confluence skin and XBMC API do not use the same syntax
+	categoriesLabels2.clear();
+	categoriesLabels2.push_back("Music");
+	categoriesLabels2.push_back("Video");
+	categoriesLabels2.push_back("Movies");
+	categoriesLabels2.push_back("TVShows");
+
+	for(std::size_t i=0;i<categoriesLabels.size();i++) {
+
+		 // we first take in consideration the user preferences setted in the Confluence Skin settings
+		 // if the user do not use this skin, we always send the main menu item, unless the library corresponding to this item is empty
+		 cond.clear();
+		 cond = "Skin.HasSetting(HomeMenuNo" + categoriesLabels[i] + "Button)";
+
 		 if (!(XBMCAddon::xbmc::getCondVisibility( cond.c_str() ) )) {
 
-			 if( categoriesLabels[i] != "Programs" && categoriesLabels[i] != "Weather"){
-				 
-				 std::string cond2 = "Library.HasContent("+ categoriesLabels[i] +")";
-				 
-				 if (XBMCAddon::xbmc::getCondVisibility( cond2.c_str() ) )
-					 menuContent["menuId"].push_back(categoriesLabels[i]);
-
+			 if (categoriesLabels[i] == "Weather") {
+				 cond.clear();
+				 cond = "IsEmpty(Weather.Plugin)";
+				 if (XBMCAddon::xbmc::getCondVisibility( cond.c_str() ) )
+					 break;
 			 }
-			 else
+
+			 // We use the Library.Hascontent method. Valid parameters are only Video, Music, Movies, TVShows, MusicVideos & MovieSets
+			 if( categoriesLabels[i] != "Programs" && categoriesLabels[i] != "Weather" && categoriesLabels[i] != "Pictures"){
+					cond.clear();
+					cond = "Library.HasContent("+ categoriesLabels2[i] +")";
+				 
+					if (XBMCAddon::xbmc::getCondVisibility( cond.c_str() ) ) {
+						menuContent.clear();
+						menuContent["menuId"].push_back(categoriesLabels[i]);
+						result.push_back(menuContent);
+				 }
+				}
+
+			 else {
+				menuContent.clear();
 				menuContent["menuId"].push_back(categoriesLabels[i]);
-		 }
+				result.push_back(menuContent);
+			}
+	 	 }
+	}
+
+	 if (XBMCAddon::xbmc::getCondVisibility("System.GetBool(pvrmanager.enabled)")) {
+		menuContent.clear();
+		menuContent["menuId"].push_back("PVR");
+		result.push_back(menuContent);
 	 }
 
-	 if (XBMCAddon::xbmc::getCondVisibility("System.GetBool(pvrmanager.enabled)"))
-		 menuContent["menuId"].push_back("PVR");
-
-	 if (XBMCAddon::xbmc::getCondVisibility("System.HasMediaDVD"))
+	 if (XBMCAddon::xbmc::getCondVisibility("System.HasMediaDVD")) {
+		 menuContent.clear();
 		 menuContent["menuId"].push_back("Inserted Disk");
-
-
-
-	//bool teste = XBMCAddon::xbmc::getCondVisibility("Skin.HasSetting(HomeMenuNoVideosButton)");
-
-	result.push_back(menuContent);
-	//result.push_back();
-
-	//window->GetSkin
-	//CGUIControl * control = window->GetControl(90);
+		 result.push_back(menuContent);
+	 }
 	
-	//CSkinInfo * skin = CSkinInfo(;
-	//skin->GetStartupWindows();
-
-    //td::vector<CStartupWindow> * startup  =  skin->GetStartupWindows();
-
-	//result.push_back("control description"+control.GetDescription);
-	//control.
+	 if (result.empty()) {
+		menuContent.clear();
+		result.push_back(menuContent);
+	 }
 
 	return OK;
 }
