@@ -228,7 +228,7 @@ JSONRPC_STATUS CGUIOperations::GetCurrentMainMenu(const CStdString &method, ITra
 
 	 if (XBMCAddon::xbmc::getCondVisibility("System.HasMediaDVD")) {
 		 menuContent.clear();
-		 menuContent["menuId"].push_back("Inserted Disk");
+		 menuContent["menuId"].push_back("Disk");
 		 result.push_back(menuContent);
 	 }
 	
