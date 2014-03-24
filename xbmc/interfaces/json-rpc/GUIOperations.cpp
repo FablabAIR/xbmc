@@ -244,10 +244,8 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 
 	CGUIWindow *window = g_windowManager.GetWindow(g_windowManager.GetFocusedWindow());
 
-
 	if(window->HasListItems()){
-		const char *param = parameterObject["SelectedItem"].asString().c_str();
-
+		CStdString param = parameterObject["SelectedItem"].asString();
 
 		CFileItemPtr firstListItem, listItemTmp;
 		CFileItemPtr selectedItemToTrigger;
@@ -276,7 +274,6 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 			}
 		}
 
-
 		if(ItemFound) {
 			for(int i=0;i<idToTrigger;i++) {
 				CInputOperations::Down(method, transport, client, parameterObject, result);
@@ -289,7 +286,7 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 		}
 	}
 	else {
-		return InvalidParams;
+			return InvalidParams;
 	}
 	return OK;
 }
