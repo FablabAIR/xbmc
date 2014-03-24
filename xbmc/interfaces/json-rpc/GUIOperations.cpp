@@ -251,12 +251,12 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 		CFileItemPtr selectedItemToTrigger;
 		bool ItemFound = false;
 		int id =0;
-		int idToTrigger;
+		int deltaPosition;
 
 		firstListItem = window->GetCurrentListItem(0);
 		if(firstListItem->GetLabel().Equals(param)) {
 			selectedItemToTrigger = firstListItem;
-			idToTrigger = id;
+			deltaPosition = id;
 			ItemFound = true;
 		}
 		else {
@@ -265,7 +265,7 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 			while( !(firstListItem->GetLabel().Equals(listItemTmp->GetLabel().c_str())) ) {
 				if(listItemTmp->GetLabel().Equals(param)) {
 					selectedItemToTrigger = listItemTmp;
-					idToTrigger = id;
+					deltaPosition = id;
 					ItemFound = true;
 					break;
 				}
@@ -275,7 +275,7 @@ JSONRPC_STATUS CGUIOperations::NavigateInListItem(const CStdString &method, ITra
 		}
 
 		if(ItemFound) {
-			for(int i=0;i<idToTrigger;i++) {
+			for(int i=0;i<deltaPosition;i++) {
 				CInputOperations::Down(method, transport, client, parameterObject, result);
 			}
 			CInputOperations::Select(method, transport, client, parameterObject, result);
